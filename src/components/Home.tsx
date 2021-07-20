@@ -11,8 +11,12 @@ interface cardDetail {
   strAlcoholic: string;
 }
 
-const fetchRandomDrink = async () => {
-  const result = await instance.get("random.php");
+const fetchRandomDrink = async (index: number) => {
+  const result = await instance.get("random.php", {
+    params: {
+      timestamp: new Date().getTime() * index, // safari's bug on caching the requests and showing same cocktail four times.
+    },
+  });
   return result;
 };
 
@@ -25,19 +29,16 @@ const Home: React.FC = () => {
     let result: cardDetail[] = [];
     let promises = [];
     for (let i = 0; i < 4; i++) {
-      promises.push(
-        fetchRandomDrink().then((res) => {
-          result.push({
-            strDrink: res.data?.drinks[0].strDrink,
-            strDrinkThumb: res.data?.drinks[0].strDrinkThumb,
-            idDrink: res.data?.drinks[0].idDrink,
-            strAlcoholic: res.data?.drinks[0].strAlcoholic,
-          });
-        })
-      );
+      promises.push(fetchRandomDrink(i));
     }
-    Promise.all(promises).then(() => {
-      setCocktailSuggestions(result);
+    Promise.all(promises).then((resp) => {
+      const mappedResponse = resp.map((res) => ({
+        strDrink: res.data?.drinks[0].strDrink,
+        strDrinkThumb: res.data?.drinks[0].strDrinkThumb,
+        idDrink: res.data?.drinks[0].idDrink,
+        strAlcoholic: res.data?.drinks[0].strAlcoholic,
+      }));
+      setCocktailSuggestions(mappedResponse);
     });
   }, []);
 
