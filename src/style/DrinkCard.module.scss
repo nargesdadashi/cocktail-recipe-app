@@ -1,0 +1,21 @@
+.card {
+  background-color: white;
+  border-radius: 0.25rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  cursor: pointer;
+
+  .cardPicture {
+    height: auto;
+    max-width: 100%;
+    vertical-align: middle;
+  }
+  .cardContent {
+    padding: 0.5rem;
+    .strAlcoholic {
+      font-size: 12px;
+    }
+  }
+}

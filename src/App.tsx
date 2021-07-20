@@ -1,25 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { Switch, Route } from "react-router-dom";
+import Home from "./components/Home";
+import SearchResult from "./components/SearchResult";
+import Drink from "./components/Drink";
+import Ingredient from "./components/Ingredient";
+import NotFound from "./components/NotFound";
+import Header from "./components/Header";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <React.Fragment>
+      <Header />
+
+      <Switch>
+        <Route exact path="/" component={Home} />
+        <Route path="/search/:by/:text" component={SearchResult} />
+        {/* <Route path="/search/:by/:type/:text" component={SearchResult} /> */}
+        <Route path="/drink/:drinkName" component={Drink} />
+        <Route path="/ingredient/:ingredientName" component={Ingredient} />
+        <Route path="/404" component={NotFound} />
+      </Switch>
+    </React.Fragment>
   );
 }
 
